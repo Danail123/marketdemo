@@ -7,7 +7,7 @@ async function initMap(lat, lng) {
 
     map = new Map(document.getElementById("map"), {
       center: { lat, lng },
-      zoom: 8,
+      zoom: 15,
       mapId: "39527057a1723443e3f04892",
     });
 
@@ -34,16 +34,6 @@ navigator.geolocation.getCurrentPosition(
     maximumAge: 0,
   }
 );
-
-// fetch("https://ipapi.co/json/")
-//   .then((res) => res.json())
-//   .then((location) => {
-//     initMap(location.latitude, location.longitude);
-//   })
-//   .catch((err) => {
-//     console.error(err);
-//     initMap(37.7749, -122.4194); // fallback
-//   });
 
 // let map;
 
