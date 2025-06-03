@@ -6,26 +6,18 @@ async function initMap(lat, lng) {
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
     map = new Map(document.getElementById("map"), {
-      center: { lat: -34.397, lng: 150.644 },
+      center: { lat, lng },
       zoom: 8,
       mapId: "39527057a1723443e3f04892",
     });
 
-    const marker = new google.maps.marker.AdvancedMarkerElement({
+    const marker = new AdvancedMarkerElement({
       map,
-      position: { lat: 37.4239163, lng: -122.0947209 },
+      position: { lat, lng },
     });
   } else {
     console.error("Latitude and Longitude are required to initialize the map.");
   }
-}
-
-if ("geolocation" in navigator) {
-  /* geolocation is available */
-  console.log("Geolocation is available");
-} else {
-  /* geolocation IS NOT available */
-  console.log("Geolocation is NOT available");
 }
 
 navigator.geolocation.getCurrentPosition(
@@ -37,3 +29,13 @@ navigator.geolocation.getCurrentPosition(
     console.error("Error getting current position:", error);
   }
 );
+
+// fetch("https://ipapi.co/json/")
+//   .then((res) => res.json())
+//   .then((location) => {
+//     initMap(location.latitude, location.longitude);
+//   })
+//   .catch((err) => {
+//     console.error(err);
+//     initMap(37.7749, -122.4194); // fallback
+//   });
