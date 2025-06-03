@@ -27,6 +27,11 @@ navigator.geolocation.getCurrentPosition(
   },
   (error) => {
     console.error("Error getting current position:", error);
+  },
+  {
+    enableHighAccuracy: true, // <-- IMPORTANT for phones!
+    timeout: 10000, // 10 seconds timeout
+    maximumAge: 0,
   }
 );
 
