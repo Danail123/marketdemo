@@ -45,7 +45,7 @@ async function searchLidlStores(lat, lng) {
   const request = {
     location: { lat, lng },
     radius: 10000, // 10km radius
-    keyword: "Lidl",
+    keyword: "supermarket",
   };
 
   service.nearbySearch(request, (results, status) => {
