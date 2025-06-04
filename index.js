@@ -32,7 +32,8 @@ async function searchLidlStores(lat, lng) {
   });
 }
 
-function addCustomMarker(place, type) {
+async function addCustomMarker(place, type) {
+  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
   let iconUrl;
   let scale = 1.0;
 
@@ -42,26 +43,28 @@ function addCustomMarker(place, type) {
       scale = 1.5;
       break;
     case "kaufland":
-      iconUrl = "./kaufland.png";
-      scale = 1.3;
+      iconUrl = "./kauflandNew.png";
+      scale = 1.5;
       break;
     case "billa":
       iconUrl = "./billa.png";
-      scale = 1.2;
+      scale = 1.5;
       break;
     default:
       iconUrl = "https://maps.google.com/mapfiles/ms/icons/red-dot.png";
       scale = 1.0;
   }
 
-  new google.maps.Marker({
+  const markerContent = document.createElement("div");
+  markerContent.style.backgroundImage = `url(${iconUrl})`;
+  markerContent.style.backgroundSize = "contain";
+  markerContent.style.width = `${32 * scale}px`;
+  markerContent.style.height = `${32 * scale}px`;
+
+  new AdvancedMarkerElement({
     map: map,
     position: place.geometry.location,
-    title: place.name,
-    icon: {
-      url: iconUrl,
-      scaledSize: new google.maps.Size(32 * scale, 32 * scale),
-    },
+    content: markerContent,
   });
 }
 
