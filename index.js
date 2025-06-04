@@ -57,7 +57,7 @@ async function searchLidlStores(lat, lng) {
           addCustomMarker(place, "lidl");
         } else if (name.includes("kaufland")) {
           addCustomMarker(place, "kaufland");
-        } else if (name.includes("billa")) {
+        } else if (name.includes("BILLA")) {
           addCustomMarker(place, "billa");
         } else {
           addCustomMarker(place, "default");
