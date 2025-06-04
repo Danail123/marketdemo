@@ -15,6 +15,8 @@ async function initMap(lat, lng) {
       map,
       position: { lat, lng },
     });
+
+    searchLidlStores(lat, lng);
   } else {
     console.error("Latitude and Longitude are required to initialize the map.");
   }
