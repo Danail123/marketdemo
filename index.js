@@ -51,13 +51,17 @@ async function searchLidlStores(lat, lng) {
   service.nearbySearch(request, (results, status) => {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       results.forEach((place) => {
-        console.log(place);
-        // Add marker for each Lidl store
-        new google.maps.Marker({
-          map: map,
-          position: place.geometry.location,
-          title: place.name,
-        });
+        const name = place.name.toLowerCase();
+
+        if (name.includes("lidl")) {
+          addCustomMarker(place, "lidl");
+        } else if (name.includes("kaufland")) {
+          addCustomMarker(place, "kaufland");
+        } else if (name.includes("billa")) {
+          addCustomMarker(place, "billa");
+        } else {
+          addCustomMarker(place, "default");
+        }
       });
     } else {
       console.error("Places search failed:", status);
