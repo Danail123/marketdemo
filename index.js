@@ -35,6 +35,34 @@ navigator.geolocation.getCurrentPosition(
   }
 );
 
+async function searchLidlStores(lat, lng) {
+  const { PlacesService } = await google.maps.importLibrary("places");
+
+  const service = new PlacesService(map);
+
+  const request = {
+    location: { lat, lng },
+    radius: 10000, // 10km radius
+    keyword: "Lidl",
+  };
+
+  service.nearbySearch(request, (results, status) => {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      results.forEach((place) => {
+        console.log(place);
+        // Add marker for each Lidl store
+        new google.maps.Marker({
+          map: map,
+          position: place.geometry.location,
+          title: place.name,
+        });
+      });
+    } else {
+      console.error("Places search failed:", status);
+    }
+  });
+}
+
 // let map;
 
 // async function loadMap(lat, lng) {
