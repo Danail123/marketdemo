@@ -15,27 +15,29 @@ async function initMap(lat, lng) {
       map,
       position: { lat, lng },
     });
-
     searchLidlStores(lat, lng);
   } else {
     console.error("Latitude and Longitude are required to initialize the map.");
+    fallbackToIP();
   }
 }
-
-navigator.geolocation.getCurrentPosition(
-  (position) => {
-    console.log("Current Position:", position.coords.latitude);
-    initMap(position.coords.latitude, position.coords.longitude);
-  },
-  (error) => {
-    console.error("Error getting current position:", error);
-  },
-  {
-    enableHighAccuracy: true, // <-- IMPORTANT for phones!
-    timeout: 10000, // 10 seconds timeout
-    maximumAge: 0,
-  }
-);
+const getCurrentPosition = () => {
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      console.log("Current Position:", position.coords.latitude);
+      initMap(position.coords.latitude, position.coords.longitude);
+    },
+    (error) => {
+      console.error("Error getting current position:", error);
+      fallbackToIP();
+    },
+    {
+      enableHighAccuracy: true, // <-- IMPORTANT for phones!
+      timeout: 10000, // 10 seconds timeout
+      maximumAge: 0,
+    }
+  );
+};
 
 async function searchLidlStores(lat, lng) {
   const { PlacesService } = await google.maps.importLibrary("places");
@@ -75,15 +77,15 @@ function addCustomMarker(place, type) {
 
   switch (type) {
     case "lidl":
-      iconUrl = "./lidl-icon.png"; // your custom Lidl icon
+      iconUrl = "./lidl.png"; // your custom Lidl icon
       scale = 1.5;
       break;
     case "kaufland":
-      iconUrl = "./kaufland-icon.png";
+      iconUrl = "./kaufland.png";
       scale = 1.3;
       break;
     case "billa":
-      iconUrl = "./billa-icon.png";
+      iconUrl = "./billa.png";
       scale = 1.2;
       break;
     default:
@@ -102,4 +104,20 @@ function addCustomMarker(place, type) {
   });
 }
 
+function fallbackToIP() {
+  console.warn("Falling back to IP-based location...");
+  fetch("https://ipapi.co/json/")
+    .then((res) => res.json())
+    .then((location) => {
+      const lat = location.latitude;
+      const lng = location.longitude;
+      console.log("IP-based location:", lat, lng);
+      initMap(lat, lng);
+    })
+    .catch((err) => {
+      console.error("IP fallback failed:", err);
+      // Default fallback to center of the world :)
+      init(0, 0);
+    });
+}
 getCurrentPosition();
