@@ -57,7 +57,7 @@ async function searchLidlStores(lat, lng) {
           addCustomMarker(place, "lidl");
         } else if (name.includes("kaufland")) {
           addCustomMarker(place, "kaufland");
-        } else if (name.includes("BILLA")) {
+        } else if (name.includes("billa")) {
           addCustomMarker(place, "billa");
         } else {
           addCustomMarker(place, "default");
@@ -68,4 +68,38 @@ async function searchLidlStores(lat, lng) {
     }
   });
 }
+
+function addCustomMarker(place, type) {
+  let iconUrl;
+  let scale = 1.0;
+
+  switch (type) {
+    case "lidl":
+      iconUrl = "./lidl-icon.png"; // your custom Lidl icon
+      scale = 1.5;
+      break;
+    case "kaufland":
+      iconUrl = "./kaufland-icon.png";
+      scale = 1.3;
+      break;
+    case "billa":
+      iconUrl = "./billa-icon.png";
+      scale = 1.2;
+      break;
+    default:
+      iconUrl = "https://maps.google.com/mapfiles/ms/icons/red-dot.png";
+      scale = 1.0;
+  }
+
+  new google.maps.Marker({
+    map: map,
+    position: place.geometry.location,
+    title: place.name,
+    icon: {
+      url: iconUrl,
+      scaledSize: new google.maps.Size(32 * scale, 32 * scale),
+    },
+  });
+}
+
 getCurrentPosition();
